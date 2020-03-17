@@ -76,13 +76,51 @@ namespace WorkCalendar
         }
         #endregion
 
-        public TimeSpan DateDiff(DateTime start, DateTime end)
+        public TimeSpan DateDiff(DateTime start, DateTime end, TimeSpan ts )
         {
             if (end < start)
-                throw new Exception("Start later then end");
+            {
+                var m = start;
+                start = end;
+                end = m;
+            }
             if (start == end)
-                return new TimeSpan(0);
-            return DateDiff(start, end);
+                return ts;
+            var day = days.Where(x => x.date.Date == start.Date).FirstOrDefault();
+            if (day == null)
+            {
+                day = new WCDay(start.Date, this);
+            }
+            //if no working time in this day go to next day
+            var worktimes = day.workTimes.Where(x => x.end > start.TimeOfDay).OrderBy(x=>x.start).ToList();
+            if (day.dayType != WCDayType.Workday || worktimes.Count() < 1)
+                return DateDiff(start.Date.AddDays(1), end,ts);
+            for (int i = 0; i < day.workTimes.Count; i++)
+            {
+                var workTime = worktimes[i];
+                if (start.TimeOfDay < workTime.start)
+                    start = start.Date.Add(workTime.start);
+                //if end date bigger then just add worktime and go to next day
+                if (end.Date>start.Date)
+                {
+                    ts = ts.Add(workTime.end - start.TimeOfDay);
+                    start = start.Date.Add(workTime.end);
+                    
+                } else //if we have same date of start and end
+                {
+                    if (end <= start)
+                        return ts;
+                    if (end.TimeOfDay < workTime.end)
+                    {
+                        return ts.Add(end.TimeOfDay.Add(-start.TimeOfDay));
+                    }
+                    ts = ts.Add(workTime.end - workTime.start);
+                    start = start.Date.Add(workTime.end);
+                }
+               
+            }
+
+            return DateDiff(start, end,ts);
         }
         public DateTime AddWorkTime(DateTime start, TimeSpan addTime)
         {
@@ -93,13 +131,14 @@ namespace WorkCalendar
             {
                 day = new WCDay(start.Date,this);
             }
+            var workTimes = day.workTimes.Where(x => x.end > start.TimeOfDay).OrderBy(x => x.start).ToList();
             //if no working time in this day go to next day
-            if (day.dayType != WCDayType.Workday || day.workTimes.Where(x => x.end > start.TimeOfDay).Count() < 1)
+            if (day.dayType != WCDayType.Workday || workTimes.Count() < 1)
                 return AddWorkTime(start.Date.AddDays(1), addTime);
             //start processing worktimes
             for (int i = 0; i < day.workTimes.Count; i++)
             {
-                var workTime = day.workTimes.OrderBy(x => x.start).ToList()[i];
+                var workTime = workTimes.ToList()[i];
                 if (workTime.start > start.TimeOfDay)
                     start = start.Date.Add(workTime.start);
                 //time interval bigger then time need to add
@@ -111,15 +150,8 @@ namespace WorkCalendar
                 else
                 {
                     //decrease time to add
-                    Console.WriteLine("before");
-                    Console.WriteLine(addTime);
-                    Console.WriteLine(start.TimeOfDay);
-
                     addTime = addTime.Add(-(workTime.end -start.TimeOfDay));
                     start=start.Date.Add(workTime.end);
-                    Console.WriteLine("after");
-                    Console.WriteLine(addTime);
-                    Console.WriteLine(start.TimeOfDay);
                 }
             }
             return AddWorkTime(start,addTime);
