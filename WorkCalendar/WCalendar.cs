@@ -76,7 +76,7 @@ namespace WorkCalendar
         }
         #endregion
 
-        public TimeSpan DateDiff(DateTime start, DateTime end, TimeSpan ts )
+        public TimeSpan WorkTimeDiff(DateTime start, DateTime end, TimeSpan ts )
         {
             if (end < start)
             {

@@ -47,7 +47,7 @@ namespace NUnitWorkCalendar
             var e = DateTime.ParseExact(end, "dd.MM.yyyy HH:mm", provider);
             var ts = new TimeSpan(0);
             WCalendar wc = new WCalendar();
-            var result = wc.DateDiff(s,e, ts);
+            var result = wc.WorkTimeDiff(s,e, ts);
             return (int)result.TotalMinutes;
         }
     }
