@@ -94,7 +94,7 @@ namespace WorkCalendar
             //if no working time in this day go to next day
             var worktimes = day.workTimes.Where(x => x.end > start.TimeOfDay).OrderBy(x=>x.start).ToList();
             if (day.dayType != WCDayType.Workday || worktimes.Count() < 1)
-                return DateDiff(start.Date.AddDays(1), end,ts);
+                return WorkTimeDiff(start.Date.AddDays(1), end,ts);
             for (int i = 0; i < day.workTimes.Count; i++)
             {
                 var workTime = worktimes[i];
@@ -120,7 +120,7 @@ namespace WorkCalendar
                
             }
 
-            return DateDiff(start, end,ts);
+            return WorkTimeDiff(start, end,ts);
         }
         public DateTime AddWorkTime(DateTime start, TimeSpan addTime)
         {
