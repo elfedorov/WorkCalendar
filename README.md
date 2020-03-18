@@ -8,20 +8,20 @@ Work calendar has default settings for work week, that can be overwitten.
 For overwrite day, just add them into calendar and set type of day and worktime of it.
 Day can contain many work periods.
 ### Configuring Start and End Time of work day
-**TimeSpan defaulStart** -- Start of work day. Default 8-30
-**TimeSpan dafaultEnd** -- End of work day. Default 17-30
+- **TimeSpan defaulStart** -- Start of work day. Default 8-30
+- **TimeSpan dafaultEnd** -- End of work day. Default 17-30
 ### Configuring days of week
-**bool workMonday** -- Default true.
-**bool workTuesday** -- Default true.
-**bool workWednesday** -- Default true.
-**bool workThursday** -- Default true.
-**bool workFriday** -- Default true.
-**bool workSaturday** -- Default false.
-**bool workSunday** -- Default false.
+- **bool workMonday** -- Default true.
+- **bool workTuesday** -- Default true.
+- **bool workWednesday** -- Default true.
+- **bool workThursday** -- Default true.
+- **bool workFriday** -- Default true.
+- **bool workSaturday** -- Default false.
+- **bool workSunday** -- Default false.
 ### Day types
- - Workday
- - Weekend
- - Holiday
+- Workday
+- Weekend
+- Holiday
 
 ### Adding exclusion days
 ```C#
