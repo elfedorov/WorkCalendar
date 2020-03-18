@@ -75,7 +75,22 @@ namespace WorkCalendar
             workSunday = false;
         }
         #endregion
-
+        /// <summary>
+        /// Calculate time in work hours between dates
+        /// </summary>
+        /// <param name="start">Start date</param>
+        /// <param name="end">End date</param>
+        public TimeSpan WorkTimeDiff(DateTime start, DateTime end)
+        {
+            return WorkTimeDiff(start, end, new TimeSpan(0));
+        }
+        /// <summary>
+        /// Calculate time in work hours between dates
+        /// </summary>
+        /// <param name="start">Start date</param>
+        /// <param name="end">End date</param>
+        /// <param name="ts">TimeSpan for summarize</param>
+        /// <returns></returns>
         public TimeSpan WorkTimeDiff(DateTime start, DateTime end, TimeSpan ts )
         {
             if (end < start)
@@ -119,9 +134,15 @@ namespace WorkCalendar
                 }
                
             }
-
+            var d = new DateTime(2020, 1, 20, 12, 47, 0);
             return WorkTimeDiff(start, end,ts);
         }
+        /// <summary>
+        /// Add worktime to date
+        /// </summary>
+        /// <param name="start">Start date</param>
+        /// <param name="addTime">How many time you need to add?</param>
+        /// <returns></returns>
         public DateTime AddWorkTime(DateTime start, TimeSpan addTime)
         {
             //no need here
