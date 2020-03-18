@@ -8,6 +8,7 @@ namespace WorkCalendar
     {
         Workday,
         Weekend,
-        Holiday
+        Holiday,
+        ShortDay
     }
 }

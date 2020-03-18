@@ -25,7 +25,7 @@ namespace WorkCalendar
         /// <summary>
         /// just simple see is it working
         /// </summary>
-        public bool isWorkingDay => dayType == WCDayType.Workday ? true : false;
+        public bool isWorkingDay => dayType == WCDayType.Workday || dayType == WCDayType.ShortDay ? true : false;
         public WCDay()
         {
             
@@ -41,31 +41,33 @@ namespace WorkCalendar
             switch (date.DayOfWeek)
             {
                 case DayOfWeek.Monday:
-                    dayType = calendar.workMonday == true ? WCDayType.Workday : WCDayType.Weekend;
+                    dayType = calendar.monday;
                     break;
                 case DayOfWeek.Tuesday:
-                    dayType = calendar.workTuesday == true ? WCDayType.Workday : WCDayType.Weekend;
+                    dayType = calendar.tuesday;
                     break;
                 case DayOfWeek.Wednesday:
-                    dayType = calendar.workWednesday == true ? WCDayType.Workday : WCDayType.Weekend;
+                    dayType = calendar.wednesday;
                     break;
                 case DayOfWeek.Thursday:
-                    dayType = calendar.workThursday == true ? WCDayType.Workday : WCDayType.Weekend;
+                    dayType = calendar.thursday;
                     break;
                 case DayOfWeek.Friday:
-                    dayType = calendar.workFriday == true ? WCDayType.Workday : WCDayType.Weekend;
+                    dayType = calendar.friday;
                     break;
                 case DayOfWeek.Saturday:
-                    dayType = calendar.workSaturday == true ? WCDayType.Workday : WCDayType.Weekend;
+                    dayType = calendar.saturday;
                     break;
                 case DayOfWeek.Sunday:
-                    dayType = calendar.workSunday == true ? WCDayType.Workday : WCDayType.Weekend;
+                    dayType = calendar.sunday;
                     break;
                 default:
                     break;
             }
             if (dayType==WCDayType.Workday)
                 workTimes.Add(new WCWorkTime ( calendar.defaulStart, calendar.defaultEnd ));
+            if (dayType == WCDayType.ShortDay)
+                workTimes.Add(new WCWorkTime(calendar.defaulStart, calendar.defaultShortEnd));
         }
     }
     

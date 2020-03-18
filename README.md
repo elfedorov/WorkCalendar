@@ -10,18 +10,21 @@ Day can contain many work periods.
 ### Configuring Start and End Time of work day
 - **TimeSpan defaulStart** -- Start of work day. Default 8-30
 - **TimeSpan dafaultEnd** -- End of work day. Default 17-30
+- **TimeSpan dafaultShortEnd** -- End of short day. Default 16-30
+### WCDayType - Day types 
+- **Workday** -working day
+- **ShortDay** -working day
+- **Weekend** -not working day
+- **Holiday** -not working day
 ### Configuring days of week
-- **bool workMonday** -- Default true.
-- **bool workTuesday** -- Default true.
-- **bool workWednesday** -- Default true.
-- **bool workThursday** -- Default true.
-- **bool workFriday** -- Default true.
-- **bool workSaturday** -- Default false.
-- **bool workSunday** -- Default false.
-### Day types
-- Workday
-- Weekend
-- Holiday
+- **WCDayType monday** -- Default Workday.
+- **WCDayType tuesday** -- Default Workday.
+- **WCDayType wednesday** -- Default Workday.
+- **WCDayType thursday** -- Default Workday.
+- **WCDayType friday** -- Default ShortDay.
+- **WCDayType saturday** -- Default Weekend.
+- **WCDayType sunday** -- Default Weekend.
+
 
 ### Adding exclusion days
 ```C#

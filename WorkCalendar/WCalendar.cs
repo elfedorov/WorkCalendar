@@ -18,61 +18,65 @@ namespace WorkCalendar
         /// Default time of end workday
         /// </summary>
         public TimeSpan defaultEnd { get; set; } = new TimeSpan(17, 30, 0);
+        /// <summary>
+        /// Default time of end shortday
+        /// </summary>
+        public TimeSpan defaultShortEnd { get; set; } = new TimeSpan(16, 30, 0);
 
         #region set defaults for weekdays 
         /// <summary>
         /// Is Monday working day
         /// </summary>
-        public bool workMonday { get; set; } = true;
+        public WCDayType monday { get; set; } = WCDayType.Workday;
         /// <summary>
         /// Is Tuesday working day
         /// </summary>
-        public bool workTuesday { get; set; } = true;
+        public WCDayType tuesday { get; set; } = WCDayType.Workday;
         /// <summary>
         /// Is Wednesday working day
         /// </summary>
-        public bool workWednesday { get; set; } = true;
+        public WCDayType wednesday { get; set; } = WCDayType.Workday;
         /// <summary>
         /// Is Thursday working day
         /// </summary>
-        public bool workThursday { get; set; } = true;
+        public WCDayType thursday { get; set; } = WCDayType.Workday;
         /// <summary>
         /// Is Friday working day
         /// </summary>
-        public bool workFriday { get; set; } = true;
+        public WCDayType friday { get; set; } = WCDayType.ShortDay;
         /// <summary>
         /// Is Saturday working day
         /// </summary>
-        public bool workSaturday { get; set; } = false;
+        public WCDayType saturday { get; set; } = WCDayType.Weekend;
         /// <summary>
         /// Is Sunday working day
         /// </summary>
-        public bool workSunday { get; set; } = false;
+        public WCDayType sunday { get; set; } = WCDayType.Weekend;
         /// <summary>
         /// Set all days in week as working
         /// </summary>
         public void SetAllDaysWorks()
         {
-            workMonday = true;
-            workTuesday = true;
-            workWednesday = true;
-            workThursday = true;
-            workFriday = true;
-            workSaturday = true;
-            workSunday = true;
+            monday = WCDayType.Workday;
+            tuesday = WCDayType.Workday;
+            wednesday = WCDayType.Workday;
+            thursday = WCDayType.Workday;
+            friday = WCDayType.Workday;
+            saturday = WCDayType.Workday;
+            sunday = WCDayType.Workday;
         }
         /// <summary>
         /// Set all days in week as no working
         /// </summary>
         public void SetAllDaysNotWorks()
         {
-            workMonday = false;
-            workTuesday = false;
-            workWednesday = false;
-            workThursday = false;
-            workFriday = false;
-            workSaturday = false;
-            workSunday = false;
+            monday = WCDayType.Weekend;
+            tuesday = WCDayType.Weekend;
+            wednesday = WCDayType.Weekend;
+            thursday = WCDayType.Weekend;
+            friday = WCDayType.Weekend;
+            saturday = WCDayType.Weekend;
+            sunday = WCDayType.Weekend;
         }
         #endregion
         /// <summary>
@@ -108,7 +112,7 @@ namespace WorkCalendar
             }
             //if no working time in this day go to next day
             var worktimes = day.workTimes.Where(x => x.end > start.TimeOfDay).OrderBy(x=>x.start).ToList();
-            if (day.dayType != WCDayType.Workday || worktimes.Count() < 1)
+            if (!day.isWorkingDay  || worktimes.Count() < 1)
                 return WorkTimeDiff(start.Date.AddDays(1), end,ts);
             for (int i = 0; i < day.workTimes.Count; i++)
             {
@@ -134,7 +138,7 @@ namespace WorkCalendar
                 }
                
             }
-            var d = new DateTime(2020, 1, 20, 12, 47, 0);
+            
             return WorkTimeDiff(start, end,ts);
         }
         /// <summary>
@@ -154,7 +158,7 @@ namespace WorkCalendar
             }
             var workTimes = day.workTimes.Where(x => x.end > start.TimeOfDay).OrderBy(x => x.start).ToList();
             //if no working time in this day go to next day
-            if (day.dayType != WCDayType.Workday || workTimes.Count() < 1)
+            if (!day.isWorkingDay|| workTimes.Count() < 1)
                 return AddWorkTime(start.Date.AddDays(1), addTime);
             //start processing worktimes
             for (int i = 0; i < day.workTimes.Count; i++)
